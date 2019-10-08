@@ -22,7 +22,16 @@ const app = props => {
     });
   };
 
-  const onToggleHandler = () => {};
+  const onToggleHandler = () => {
+    setPersonsState({
+      persons: [
+        { name: "max", age: 18 },
+        { name: "Manu", age: 18 },
+        { name: "Stephenie", age: 13 }
+      ],
+      showPersons: !personsState.showPersons
+    });
+  };
 
   const nameChangedHandler = event => {
     setPersonsState({
@@ -34,6 +43,15 @@ const app = props => {
     });
   };
 
+  const deletePersonHandler = (idx) => {
+    const personsArr = [...personsState.persons];
+    personsArr.splice(idx, 1);
+    setPersonsState({
+      persons: personsArr,
+      showPersons: personsState.showPersons      
+    })
+  }
+
   const style = {
     backgroundColor: "white",
     font: "inherit",
@@ -42,30 +60,27 @@ const app = props => {
     cursor: "pointer"
   };
 
+  let persons = null;
+  if (personsState.showPersons) {
+    persons = (
+      <div>
+        { personsState.persons.map( (person, index) => {
+          return <Person 
+          click = {() => deletePersonHandler(index)}
+          name={person.name} 
+          age={person.age} />
+        })}
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <h1> Cool Story bro!</h1>
       <button style={style} onClick={onToggleHandler}>
         Switch Name
       </button>
-      {personsState.showPersons ? (
-        <div>
-          <Person
-            name={personsState.persons[0].name}
-            age={personsState.persons[0].age}
-            click={switchNameHandler}
-            changed={nameChangedHandler}
-          />
-          <Person
-            name={personsState.persons[1].name}
-            age={personsState.persons[0].age}
-            changed={nameChangedHandler}
-          >
-            {" "}
-            My Hobbies: Racing{" "}
-          </Person>
-        </div>
-      ) : null}
+      {persons}
     </div>
   );
 };
