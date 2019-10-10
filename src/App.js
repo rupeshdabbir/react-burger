@@ -65,7 +65,8 @@ const app = props => {
     persons = (
       <div>
         { personsState.persons.map( (person, index) => {
-          return <Person 
+          return <Person
+          key = {person.name}
           click = {() => deletePersonHandler(index)}
           name={person.name} 
           age={person.age} />
